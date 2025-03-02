@@ -57,6 +57,28 @@ options:
     "bytes": 3631264436
 }
 ```
+
+## Docker Integration
+
+The script can be run in a docker container. Please, take in mind that the input and output files must be mapped into the container:
+
+1. Build image with the tool: `docker build . -t "log_processor"`
+2. Run the container: `docker run --rm -v $(pwd)/files/:/files/ log_processor /files/access.log /files/output.json --mfip --lfip --eps --bytes`
+
+If you want to run it as a service, please create the following docker-compose file:
+
+```yaml
+services:
+  log_processor:
+    container_name: log_processor
+    build: .
+    volumes:
+      - ./files:/files
+    command: ["python", "log_processor"]
+```
+
+And run it like this: `docker-compose run log_processor /files/access.log /files/output.json --mfip --lfip --eps --bytes`
+
 ## Future Extensibility
 
 The current implementation of the log processor is designed to be easily extensible. Here are some potential future improvements and extensions:
